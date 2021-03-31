@@ -1,4 +1,4 @@
 (library
  (name bactrian)
  (public_name bactrian)
- (libraries logs core_kernel))
+ (libraries core_kernel logs alcotest))
