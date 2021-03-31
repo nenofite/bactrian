@@ -14,11 +14,16 @@ let setup factors =
   in
   { factors; test_cases = [] }
 
-let test s tc =
+let test' s tc =
   let tc =
     List.map tc ~f:(fun (factor, value) -> (Factor factor, Value value))
   in
-  s.test_cases <- tc :: s.test_cases
+  s.test_cases <- tc :: s.test_cases;
+  tc
+
+let test s tc = test' s tc |> ignore
+
+let named_test s tc = test' s tc |> Show.test_case
 
 let finish s =
   let { factors; test_cases } = s in

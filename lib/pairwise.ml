@@ -1,19 +1,11 @@
 open! Core_kernel
-open Types
+(* open Types *)
 
 let value_exists value ~factor ~test_cases =
   List.exists test_cases ~f:(fun tc ->
       List.exists tc ~f:(Poly.equal (factor, value))
       (* ~f:(fun (here_factor, here_value) ->
           String.(here_factor = factor && here_value = value)) *))
-
-let show_missing missing =
-  let ls =
-    List.map missing ~f:(fun (Factor factor, Value value) ->
-        Printf.sprintf "%s=%s" factor value)
-    |> String.concat ~sep:" "
-  in
-  Printf.sprintf "Missing tests: %s" ls
 
 let check ~factors ~test_cases =
   let missing =
@@ -24,7 +16,7 @@ let check ~factors ~test_cases =
   in
   match missing with
   | [] -> Result.return ()
-  | missing -> Result.fail (show_missing missing)
+  | missing -> Result.fail (Show.missing missing)
 
 (* let pair_exists a b ~table =
   let tc_has_pair tc =
