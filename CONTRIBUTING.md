@@ -1,3 +1,12 @@
+# todo
+
+- [ ] Read current test cases from comments
+- [ ] Error when those don't match specified test onewise cases
+- [ ] promote to add missing onewise cases
+- [ ] Then expand to pairwise
+
+# oskel'd stuff:
+
 ## Setting up your working environment
 
 bactrian requires OCaml 4.13.0 or higher so you will need a corresponding opam
@@ -11,7 +20,7 @@ To clone the project's sources and install both its regular and test
 dependencies run:
 
 ```
-git clone https://github.com:/bactrian.git
+git clone https://github.com:nenofite/bactrian.git
 cd bactrian
 opam install -t --deps-only .
 ```

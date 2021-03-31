@@ -13,6 +13,7 @@ depends: [
   "alcotest"
   "fmt"
   "logs"
+  "core_kernel"
   "odoc" {with-doc}
 ]
 build: [

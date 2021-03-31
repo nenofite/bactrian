@@ -17,4 +17,4 @@
  (name bactrian)
  (synopsis "A really stupid pairwise test generator")
  (description "A really stupid pairwise test generator\n")
- (depends alcotest fmt logs))
+ (depends alcotest fmt logs core_kernel))

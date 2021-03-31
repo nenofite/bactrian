@@ -5,7 +5,7 @@ A really stupid pairwise test generator
 ## Installation
 
 ```
-opam pin add --yes https://github.com//bactrian.git
+opam pin add --yes https://github.com/nenofite/bactrian.git
 opam install bactrian
 ```
 

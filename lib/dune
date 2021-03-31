@@ -1,4 +1,4 @@
 (library
  (name bactrian)
  (public_name bactrian)
- (libraries logs))
+ (libraries logs core_kernel))
