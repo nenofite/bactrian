@@ -1,0 +1,4 @@
+(library
+ (name bactrian)
+ (public_name bactrian)
+ (libraries logs))

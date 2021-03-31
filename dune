@@ -1,0 +1,11 @@
+(rule
+ (targets bactrian-help.txt.gen)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run bactrian --help=plain))))
+
+(rule
+ (alias runtest)
+ (action
+  (diff bactrian-help.txt bactrian-help.txt.gen)))
