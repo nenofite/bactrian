@@ -7,6 +7,10 @@ let factor_value_set set =
   |> String.concat ~sep:"; "
 
 let missing missing =
-  Printf.sprintf "Missing tests: %s" (factor_value_set missing)
+  let ls =
+    List.map missing ~f:(fun tc -> Printf.sprintf "* %s" (factor_value_set tc))
+    |> String.concat ~sep:"\n"
+  in
+  Printf.sprintf "Missing tests:\n%s" ls
 
 let test_case tc = factor_value_set tc

@@ -27,7 +27,7 @@ let named_test s tc = test' s tc |> Show.test_case
 
 let finish s =
   let { factors; test_cases } = s in
-  Pairwise.check ~factors ~test_cases
+  Check.check ~factors ~test_cases
 
 let alcotest s () =
   let str = finish s |> Result.error |> Option.value ~default:"" in

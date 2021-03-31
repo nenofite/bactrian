@@ -2,7 +2,10 @@ open! Core_kernel
 
 let b =
   Bactrian.setup
-    [ ("factors", [ "none"; "some" ]); ("test cases", [ "missing"; "enough" ]) ]
+    [
+      ("factors", [ "none"; "one"; "multiple" ]);
+      ("test cases", [ "missing"; "enough" ]);
+    ]
 
 let bt = Bactrian.named_test b
 
@@ -11,7 +14,7 @@ let test_missing_one () =
   Bactrian.test uut [ ("test factor", "a") ];
   Alcotest.(check (result unit string))
     "should fail"
-    (Result.fail "Missing tests: test factor=b")
+    (Result.fail "Missing tests:\n* test factor=b")
     (Bactrian.finish uut)
 
 let test_enough () =
@@ -30,10 +33,10 @@ let test_none () =
 
 let suite =
   [
-    ( bt [ ("factors", "some"); ("test cases", "missing") ],
+    ( bt [ ("factors", "one"); ("test cases", "missing") ],
       `Quick,
       test_missing_one );
-    (bt [ ("factors", "some"); ("test cases", "enough") ], `Quick, test_enough);
+    (bt [ ("factors", "one"); ("test cases", "enough") ], `Quick, test_enough);
     (bt [ ("factors", "none"); ("test cases", "enough") ], `Quick, test_none);
     ("Bactrian", `Quick, Bactrian.alcotest b);
   ]
