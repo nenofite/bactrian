@@ -1,11 +1,7 @@
 open! Core_kernel
 (* open Types *)
 
-(* let value_exists value ~factor ~test_cases =
-  List.exists test_cases ~f:(fun tc ->
-      List.exists tc ~f:(Poly.equal (factor, value))) *)
-
-let check ~factors ~test_cases =
+let fix_and_check ~factors ~test_cases =
   let fixed_test_cases =
     Pairwise.sort_and_ensure_all_pairs factors ~table:test_cases
   in
@@ -13,12 +9,35 @@ let check ~factors ~test_cases =
     List.filter fixed_test_cases ~f:(fun fixed_tc ->
         not (List.exists test_cases ~f:(Poly.equal fixed_tc)))
   in
-  (* let missing =
-       List.concat_map factors ~f:(fun (factor, values) ->
-           List.filter_map values ~f:(fun value ->
-               if value_exists value ~factor ~test_cases then None
-               else Some (factor, value)))
-     in *)
   match missing with
-  | [] -> Result.return ()
+  | [] -> Result.return fixed_test_cases
   | missing -> Result.fail (Show.missing missing)
+
+let check_factors ~factors ~test_cases =
+  let known_factors = List.map factors ~f:(fun (fac, _) -> fac) in
+  let extra_factors =
+    List.concat test_cases
+    |> List.map ~f:(fun (fac, _) -> fac)
+    |> List.filter ~f:(fun fac ->
+           not (List.mem known_factors fac ~equal:Poly.equal))
+  in
+  match extra_factors with
+  | [] -> Result.return ()
+  | extra -> Result.failf "Unknown factors: %s" (Show.unknown_factors extra)
+
+(* let check_values ~factors ~test_cases =
+  let extra_factors =
+    List.concat test_cases
+    |> List.map ~f:(fun (fac, _) -> fac)
+    |> List.filter ~f:(fun fac ->
+           not (List.mem known_factors fac ~equal:Poly.equal))
+  in
+  match extra_factors with
+  | [] -> Result.return ()
+  | extra -> Result.failf "Unknown factors: %s" (Show.unknown_factors extra) *)
+
+let check ~factors ~test_cases =
+  let ( let* ) = Result.( >>= ) in
+  let* () = check_factors ~factors ~test_cases in
+  let* _fixed = fix_and_check ~factors ~test_cases in
+  Result.return ()
