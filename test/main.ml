@@ -46,7 +46,7 @@ let test_unrecognized =
       Bactrian.test uut [ ("another factor", "a") ];
       Alcotest.(check (result unit string))
         "should fail"
-        (Result.fail "Unknown factors: another factor")
+        (Result.fail "Unknown factor: another factor")
         (Bactrian.finish uut) )
 
 let suite =

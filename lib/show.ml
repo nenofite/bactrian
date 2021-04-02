@@ -2,8 +2,8 @@ open! Core_kernel
 open Types
 
 let factor_value_set set =
-  List.map set ~f:(fun (Factor factor, Value value) ->
-      Printf.sprintf "%s=%s" factor value)
+  sort_test_case set
+  |> List.map ~f:(fun (f, v) -> show_factor_value f v)
   |> String.concat ~sep:"; "
 
 let missing missing =
@@ -17,4 +17,4 @@ let missing missing =
 let test_case tc = factor_value_set tc
 
 let unknown_factors factors =
-  List.map factors ~f:(fun (Factor s) -> s) |> String.concat ~sep:"; "
+  List.map factors ~f:factor_name |> String.concat ~sep:"; "

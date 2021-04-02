@@ -1,5 +1,5 @@
 open! Core_kernel
-(* open Types *)
+open Types
 
 let assoc_find = List.Assoc.find ~equal:Poly.equal
 
@@ -50,19 +50,20 @@ let ensure_pair a b ~table =
 
 let sort_factors factor_defs =
   List.stable_sort factor_defs ~compare:(fun a b ->
-      let _, a_values = a and _, b_values = b in
-      -1 * Int.compare (List.length a_values) (List.length b_values))
+      -1
+      * Int.compare
+          (List.length a.possible_values)
+          (List.length b.possible_values))
 
 let fold_sorted_pairs factor_defs ~init ~f =
   let rec go_inner earlier_factors factor init f =
-    let here_factor, here_values = factor in
     match earlier_factors with
     | [] -> init
-    | (e_factor, e_values) :: earlier_factors ->
+    | e_factor :: earlier_factors ->
         let init =
-          List.cartesian_product e_values here_values
+          List.cartesian_product e_factor.possible_values factor.possible_values
           |> List.fold ~init ~f:(fun init (e_value, here_value) ->
-                 f init ((e_factor, e_value), (here_factor, here_value)))
+                 f init ((e_factor, e_value), (factor, here_value)))
         in
         go_inner earlier_factors factor init f
   in
@@ -81,11 +82,12 @@ let ensure_one a ~table =
   if List.mem table [ a ] ~equal:Poly.equal then table else [ a ] :: table
 
 let ensure_all_onewise factor_defs ~table =
-  List.fold factor_defs ~init:table ~f:(fun table (factor, values) ->
-      List.fold values ~init:table ~f:(fun table value ->
+  List.fold factor_defs ~init:table ~f:(fun table factor ->
+      List.fold factor.possible_values ~init:table ~f:(fun table value ->
           ensure_one (factor, value) ~table))
 
-let sort_and_ensure_all_pairs factor_defs ~table =
+let sort_and_ensure_all_pairs (factor_defs : factor list)
+    ~(table : test_case list) =
   let factor_defs = sort_factors factor_defs in
   match factor_defs with
   | [] | [ _ ] -> ensure_all_onewise factor_defs ~table
