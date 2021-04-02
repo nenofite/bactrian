@@ -30,5 +30,5 @@ let finish s =
   Check.check ~factors ~test_cases
 
 let alcotest s () =
-  let str = finish s |> Result.error |> Option.value ~default:"" in
-  Alcotest.(check string) "No missing tests" "" str
+  Alcotest.(check (result unit string))
+    "No missing tests" (Result.return ()) (finish s)
