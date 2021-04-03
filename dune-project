@@ -15,6 +15,7 @@
 
 (package
  (name bactrian)
- (synopsis "A really stupid pairwise test generator")
- (description "A really stupid pairwise test generator\n")
+ (synopsis "Pairwise test helper")
+ (description
+  "A stupid-simple tool that checks if your test suite contains all possible pairs, and suggests tests to add if not.\n")
  (depends alcotest fmt logs core_kernel))
